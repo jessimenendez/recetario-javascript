@@ -10,20 +10,51 @@
 </head>
   <title>Recetario</title>
 </head>
+
 <body>
   
-  <main class="container">
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Recetario</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages\contact.html">Contacto</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categorías
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Dulces</a></li>
+              <li><a class="dropdown-item" href="#">Para el mate</a></li>
+              <li><a class="dropdown-item" href="#">Vegetarianas</a></li>          
+              <li><a class="dropdown-item" href="#">Veganas</a></li>
+              <li><a class="dropdown-item" href="#">Fit</a></li>
+            </ul>
+          </li>        
+        </ul>        
+      </div>
+    </div>
+  </nav>
+      
+  <main class="container">    
     
-    <div class="d-flex flex-column align-items-center">
-      <input class=" col-6" type="text" id="input_search" placeholder="Ingresa nombre de receta">
+    <div class="d-flex flex-column align-items-left">
+      <input class=" col-6 mb-4" type="text" id="input_search" placeholder="Ingresa nombre de receta">      
       <button id="btn-buscar" class="btn btn-success col-3">Buscar</button>
     </div>
-
     <section id="container_recetas" class="row mt-4">
-
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
   <script src="index.js"></script>

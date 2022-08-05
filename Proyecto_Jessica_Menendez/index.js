@@ -20,28 +20,39 @@ let procedimiento_bizcochuelo = "Colocar los huevos y el azúcar en un bowl, y b
 
 
 let texto_receta = document.getElementById("texto_receta");
+let receta_elegida = document.getElementById("input_search");
+console.log(receta_elegida)
+let btn_buscar = document.getElementById("btn-buscar");
+
 
 
 const recetas =[{    
     nombre:'Pollo Frito',
     ingredientes: pollo_frito,
-    procedimiento: procedimiento_pollo_frito
+    procedimiento: procedimiento_pollo_frito,
+    imagen: "asset/pollo_frito.jpg" 
 },
 {
     nombre:'Crema chantilly',
     ingredientes: crema_chantilly,
-    procedimiento:procedimiento_crema
+    procedimiento:procedimiento_crema,
+    imagen: "asset/crema.png"
 },
 {
     nombre:'Bizcochuelo',
     ingredientes: bizcochuelo,
-    procedimiento: procedimiento_bizcochuelo
+    procedimiento: procedimiento_bizcochuelo,
+    imagen: "asset/el-bizcochuelo.png"
 }
 ]
 
-let receta_elegida = document.getElementById("input_search");
-console.log(receta_elegida)
-let btn_buscar = document.getElementById("btn-buscar")
+window.addEventListener("load", () => {
+    if (localStorage.getItem("array_recetas")) { 
+      arr_recetas_buscadas = JSON.parse(localStorage.getItem("array_recetas"));     
+      generar_interfaz_recetas_buscadas(arr_recetas_buscadas)
+    }
+})
+
 
 const generar_interfaz = (array) => {
     let contenedor = document.getElementById("container_recetas");
@@ -49,23 +60,62 @@ const generar_interfaz = (array) => {
     if(array.length > 0){
         array.map( el => contenedor.innerHTML += `
         <div class="card" id="${el.nombre}" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">${el.nombre}</h5>
-          <p class="card-text">${el.ingredientes}</p>
-          <p class="card-text">${el.procedimiento}</p>                              
+          <img class="card-img-top" src="${el.imagen}" alt="Card image">
+          <div class="card-body">
+            <h5 class="card-title">${el.nombre}</h5>
+            <p class="card-text">${el.ingredientes}</p>
+            <p class="card-text">${el.procedimiento}</p>                              
           </div>
       </div>`)
     }else{
-        contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
+        //contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'No tenemos esa receta, pronto la agregaremos a nuestro catálogo ☺'           
+          })
     }
 
 }
+
+const generar_interfaz_recetas_buscadas = (array) => {
+    let contenedor = document.getElementById("container_recetas");
+    contenedor.innerHTML = "";
+    if(array.length > 0){
+        array.map( el => contenedor.innerHTML += `
+        <div class="card" id="${el.nombre}" style="width: 18rem;">
+            <p class="card-text">Recetas buscadas recientemente</p>   
+            <h5 class="card-title">${el.nombre}</h5>
+            <button id="verdenuevo" type="button" class="btn btn-info mb-4">Volver a ver</button>                                     
+          </div>
+      </div>`)
+    }else{
+        //contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'No tenemos esa receta, pronto la agregaremos a nuestro catálogo ☺'           
+          })
+    }
+
+}
+
 btn_buscar.addEventListener("click", (e) => {
     e.target.value
-    let filtro = recetas.filter( el => el.nombre.toLowerCase().includes(receta_elegida.value.toLowerCase()))
-    generar_interfaz(filtro);
-    console.log(filtro)
+    let filtro_receta = recetas.filter( el => el.nombre.toLowerCase().includes(receta_elegida.value.toLowerCase()))
+    localStorage.setItem("array_recetas", JSON.stringify(filtro_receta))
+    generar_interfaz(filtro_receta);
+    console.log(filtro_receta)
 })
+
+//si esta el boton para volver a ver la receta, la muestro nuevamente cuando recibe el click
+document.addEventListener('click',function(e){
+    if(e.target && e.target.id == 'verdenuevo'){
+        arr_recetas_buscadas = JSON.parse(localStorage.getItem("array_recetas")); 
+        generar_interfaz(arr_recetas_buscadas);
+     }
+ });
+
 
 
 //se deja código para usar luego
