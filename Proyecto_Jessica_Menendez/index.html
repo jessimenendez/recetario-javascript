@@ -7,12 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="style.css">
-</head>
-  <title>Recetario</title>
-</head>
-
-<body>
-  
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Recetario</a>
@@ -22,7 +16,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="pages\contact.html">Contacto</a>
@@ -32,26 +26,30 @@
               Categorías
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Dulces</a></li>
-              <li><a class="dropdown-item" href="#">Para el mate</a></li>
-              <li><a class="dropdown-item" href="#">Vegetarianas</a></li>          
-              <li><a class="dropdown-item" href="#">Veganas</a></li>
-              <li><a class="dropdown-item" href="#">Fit</a></li>
+              <li><a class="dropdown-item" href="pages/dulces.html">Dulces</a></li>
+              <li><a class="dropdown-item" href="pages/paraelmate.html">Para el mate</a></li>
+              <li><a class="dropdown-item" href="pages/vegetarianas.html">Vegetarianas</a></li>          
+              <li><a class="dropdown-item" href="pages/veganas.html">Veganas</a></li>
             </ul>
           </li>        
         </ul>        
       </div>
     </div>
   </nav>
+</head>
+<title>Recetario</title>
+<body > 
       
-  <main class="container">    
+  <main class="container-fluid">    
     
-    <div class="d-flex flex-column align-items-left">
-      <input class=" col-6 mb-4" type="text" id="input_search" placeholder="Ingresa nombre de receta">      
-      <button id="btn-buscar" class="btn btn-success col-3">Buscar</button>
+    <div class="d-flex flex-column">
+      <div class="row">
+        <input class=" col-8 mt-4" type="text" id="input_search" placeholder="Ingresa nombre de receta">      
+        <!-- <button id="btn-buscar" class="btn btn-success col-3">Buscar</button> -->
+        <button class="button mt-4" id="btn-buscar" style="vertical-align:middle"><span>Buscar </span></button>
+      </div>
     </div>
-    <section id="container_recetas" class="row mt-4">
-    </section>
+    <section id="container_recetas" class="row mt-4"></section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -18,6 +18,8 @@ let procedimiento_pollo_frito = "Cortar la pechuga en tiras gruesas. Pasarlas po
 let bizcochuelo = "-200 g de harina leudante \n-200 g de azúcar\n-6 huevos\n-Esencia de vainilla, opcional.";
 let procedimiento_bizcochuelo = "Colocar los huevos y el azúcar en un bowl, y batir hasta llegar a un punto letra. Dejar de batir. Tamizar la harina e ir agregando poco a poco y con una espátula. Integrar con movimientos envolventes. Enmantecar y enharinar un molde. Verter la mezcla y llevar a un horno moderado a 180° durante cerca de 40 minutos. Dejar enfriar y desmoldar.";
 
+let croquetas_garb = "400gr garbanzos cocidos Cebolla 2 o 3 Ajos 3 champiñones 300ml de yogur o kéfir vegetal SIN AZÚCAR Queso vegano 2 cdas soperas de Harina de garbanzo 1/2 taza agua Pan rallado con ajo y perejil Aceite de oliva Curry en polvo Ajo en polvo Pimienta negra Sal"
+let procedimiento_croquetas = "procedimiento a completar"
 
 let texto_receta = document.getElementById("texto_receta");
 let receta_elegida = document.getElementById("input_search");
@@ -43,6 +45,12 @@ const recetas =[{
     ingredientes: bizcochuelo,
     procedimiento: procedimiento_bizcochuelo,
     imagen: "asset/el-bizcochuelo.png"
+},
+{
+    nombre:'Croquetas de garbanzo',
+    ingredientes: croquetas_garb,
+    procedimiento: procedimiento_croquetas,
+    imagen: "asset/croquetas-garbanzos-veganas.jpg"
 }
 ]
 
@@ -59,6 +67,7 @@ const generar_interfaz = (array) => {
     contenedor.innerHTML = "";
     if(array.length > 0){
         array.map( el => contenedor.innerHTML += `
+        <div class="container-fluid">        
         <div class="card" id="${el.nombre}" style="width: 18rem;">
           <img class="card-img-top" src="${el.imagen}" alt="Card image">
           <div class="card-body">
@@ -66,7 +75,8 @@ const generar_interfaz = (array) => {
             <p class="card-text">${el.ingredientes}</p>
             <p class="card-text">${el.procedimiento}</p>                              
           </div>
-      </div>`)
+        </div>
+        </div>`)
     }else{
         //contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
         Swal.fire({
@@ -82,13 +92,15 @@ const generar_interfaz_recetas_buscadas = (array) => {
     let contenedor = document.getElementById("container_recetas");
     contenedor.innerHTML = "";
     if(array.length > 0){
-        array.map( el => contenedor.innerHTML += `
+        array.map( el => contenedor.innerHTML += ` 
+        <div class="container-fluid">       
         <div class="card" id="${el.nombre}" style="width: 18rem;">
-            <p class="card-text">Recetas buscadas recientemente</p>   
-            <h5 class="card-title">${el.nombre}</h5>
-            <button id="verdenuevo" type="button" class="btn btn-info mb-4">Volver a ver</button>                                     
-          </div>
-      </div>`)
+            <p class="card-text mb-4">Recetas buscadas recientemente</p>   
+            <h5 class="card-title mb-4">${el.nombre}</h5>
+            <button id="verdenuevo" type="button" class="button mb-4">Volver a ver</button>                                     
+        </div>
+        </div>
+      `)
     }else{
         //contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
         Swal.fire({
@@ -102,10 +114,19 @@ const generar_interfaz_recetas_buscadas = (array) => {
 
 btn_buscar.addEventListener("click", (e) => {
     e.target.value
-    let filtro_receta = recetas.filter( el => el.nombre.toLowerCase().includes(receta_elegida.value.toLowerCase()))
-    localStorage.setItem("array_recetas", JSON.stringify(filtro_receta))
-    generar_interfaz(filtro_receta);
-    console.log(filtro_receta)
+    if(receta_elegida.value){
+        let filtro_receta = recetas.filter( el => el.nombre.toLowerCase().includes(receta_elegida.value.toLowerCase()))
+        localStorage.setItem("array_recetas", JSON.stringify(filtro_receta))
+        generar_interfaz(filtro_receta);
+        console.log(filtro_receta)
+    }else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No ingresaste ninguna receta'           
+          })
+    }
+   
 })
 
 //si esta el boton para volver a ver la receta, la muestro nuevamente cuando recibe el click
