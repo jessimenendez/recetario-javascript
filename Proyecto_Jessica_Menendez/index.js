@@ -78,6 +78,7 @@ const generar_interfaz = (array) => {
         </div>
         </div>`)
     }else{
+        //Se reemplaza usando la librería SWEET ALERT
         //contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
         Swal.fire({
             icon: 'warning',
