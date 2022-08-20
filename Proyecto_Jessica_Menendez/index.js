@@ -26,7 +26,50 @@ let receta_elegida = document.getElementById("input_search");
 console.log(receta_elegida)
 let btn_buscar = document.getElementById("btn-buscar");
 
+/*
+Obteniendo y mostrando personajes de la API de Rick & Morty
+utilizando promesas
+*/
 
+
+// const fetchRecetas = () => {
+//     console.log('https://www.themealdb.com/api/json/v1/1/search.php?s=' + receta_elegida.value)
+//     fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + receta_elegida.value)
+//     .then(response => response.json())
+//     .then(data => renderizarReceta(data.meals))
+// }
+
+const fetchRecetas = async () => {
+    try{
+        const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + receta_elegida.value)
+        const data = await response.json()    
+        renderizarReceta(data.meals);
+    }
+    catch (error){
+        console.log(error)
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'No tenemos esa receta, pronto la agregaremos a nuestro catálogo ☺'           
+          })
+    }
+    
+}
+
+const renderizarReceta = (recetas) => {
+    const personajesContainer = document.getElementById('container_recetas');
+    for(const receta of recetas) {
+        personajesContainer.innerHTML += `
+        <div class="card m-3" style="width: 18rem;">
+            <img src="${receta.strMealThumb}" class="card-img-top" alt="...">
+            <div class="card-body">
+            <h5 class="card-title">${receta.strMeal}</h5>
+            <p class="card-text">Status: ${receta.strInstructions}</p>
+            </div>
+        </div>
+        `
+    }
+}
 
 const recetas =[{    
     nombre:'Pollo Frito',
@@ -113,22 +156,24 @@ const generar_interfaz_recetas_buscadas = (array) => {
 
 }
 
-btn_buscar.addEventListener("click", (e) => {
-    e.target.value
-    if(receta_elegida.value){
-        let filtro_receta = recetas.filter( el => el.nombre.toLowerCase().includes(receta_elegida.value.toLowerCase()))
-        localStorage.setItem("array_recetas", JSON.stringify(filtro_receta))
-        generar_interfaz(filtro_receta);
-        console.log(filtro_receta)
-    }else{
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'No ingresaste ninguna receta'           
-          })
-    }
+// btn_buscar.addEventListener("click", (e) => {
+//     e.target.value
+//     if(receta_elegida.value){
+//         let filtro_receta = recetas.filter( el => el.nombre.toLowerCase().includes(receta_elegida.value.toLowerCase()))
+//         localStorage.setItem("array_recetas", JSON.stringify(filtro_receta))
+//         generar_interfaz(filtro_receta);
+//         console.log(filtro_receta)
+//     }else{
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Oops...',
+//             text: 'No ingresaste ninguna receta'           
+//           })
+//     }
    
-})
+// })
+
+btn_buscar.addEventListener('click', fetchRecetas)
 
 //si esta el boton para volver a ver la receta, la muestro nuevamente cuando recibe el click
 document.addEventListener('click',function(e){
