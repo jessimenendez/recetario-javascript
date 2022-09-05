@@ -1,49 +1,28 @@
-//Se intenta simular un recetario, donde el usuario pueda buscar recetas y sugerir que se agregue alguna,
-//si la que busca no está en el catálogo
-
-class Receta {
-    constructor(nombre, ingredientes, procedimiento){
-        this.nombre = nombre
-        this.ingredientes = ingredientes
-        this.procedimiento = procedimiento
-    }
-}
-
-let crema_chantilly = "-200 g de crema para montar fría \n-40 g de azúcar impalpable \n-Media cucharadita de extracto de vainilla";
-let procedimiento_crema = "Ponemos en un bowl 200 g de crema para batir muy fría junto con 40 g de azúcar glas y media cucharadita de extracto de vainilla. \nBatir hasta obtener una crema firme.";
-
-let pollo_frito = "-1 pechuga de pollo\n-1 huevo\n-Pan rallado\n-Sal y condimentos a gusto\n-Aceite para freír";
-let procedimiento_pollo_frito = "Cortar la pechuga en tiras gruesas. Pasarlas por el huevo batido condimentado. Y por último pasarlas por el pan rallado. Freír con abundante aceite caliente.";
-
-let bizcochuelo = "-200 g de harina leudante \n-200 g de azúcar\n-6 huevos\n-Esencia de vainilla, opcional.";
-let procedimiento_bizcochuelo = "Colocar los huevos y el azúcar en un bowl, y batir hasta llegar a un punto letra. Dejar de batir. Tamizar la harina e ir agregando poco a poco y con una espátula. Integrar con movimientos envolventes. Enmantecar y enharinar un molde. Verter la mezcla y llevar a un horno moderado a 180° durante cerca de 40 minutos. Dejar enfriar y desmoldar.";
-
-let croquetas_garb = "400gr garbanzos cocidos Cebolla 2 o 3 Ajos 3 champiñones 300ml de yogur o kéfir vegetal SIN AZÚCAR Queso vegano 2 cdas soperas de Harina de garbanzo 1/2 taza agua Pan rallado con ajo y perejil Aceite de oliva Curry en polvo Ajo en polvo Pimienta negra Sal"
-let procedimiento_croquetas = "procedimiento a completar"
+//Se intenta simular un recetario, donde el usuario pueda buscar recetas y verla mas en detalle a traves de un modal
+//Buscar en ingres (ej: chicken)
 
 let texto_receta = document.getElementById("texto_receta");
 let receta_elegida = document.getElementById("input_search");
-console.log(receta_elegida)
 let btn_buscar = document.getElementById("btn-buscar");
 
 /*
-Obteniendo y mostrando personajes de la API de Rick & Morty
+Obteniendo y mostrando recetas de la API themealdb
 utilizando promesas
 */
 
+let listado_recetas;
+let id_meals;
+let lista_ingredientes = [];
+let resultado;
 
-// const fetchRecetas = () => {
-//     console.log('https://www.themealdb.com/api/json/v1/1/search.php?s=' + receta_elegida.value)
-//     fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + receta_elegida.value)
-//     .then(response => response.json())
-//     .then(data => renderizarReceta(data.meals))
-// }
-
+//fetch al servicio para traer recetas (esta en ingles)
 const fetchRecetas = async () => {
     try{
         const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + receta_elegida.value)
-        const data = await response.json()    
-        renderizarReceta(data.meals);
+        const data = await response.json() 
+        listado_recetas = data.meals;
+        console.log("listado recetas!! ",listado_recetas);  
+        renderizarReceta(data.meals);      
     }
     catch (error){
         console.log(error)
@@ -56,46 +35,25 @@ const fetchRecetas = async () => {
     
 }
 
+
+//muestro las recetas que obtengo del servicio
 const renderizarReceta = (recetas) => {
-    const personajesContainer = document.getElementById('container_recetas');
+    const recetasContainer = document.getElementById('container_recetas');
     for(const receta of recetas) {
-        personajesContainer.innerHTML += `
+        recetasContainer.innerHTML += `
         <div class="card m-3" style="width: 18rem;">
             <img src="${receta.strMealThumb}" class="card-img-top" alt="...">
             <div class="card-body">
             <h5 class="card-title">${receta.strMeal}</h5>
-            <p class="card-text">Status: ${receta.strInstructions}</p>
+            <button type="button" class="btn btn-primary " data-target="#myModal" id=${receta.idMeal}>Ver receta</button>         
             </div>
         </div>
         `
     }
 }
 
-const recetas =[{    
-    nombre:'Pollo Frito',
-    ingredientes: pollo_frito,
-    procedimiento: procedimiento_pollo_frito,
-    imagen: "asset/pollo_frito.jpg" 
-},
-{
-    nombre:'Crema chantilly',
-    ingredientes: crema_chantilly,
-    procedimiento:procedimiento_crema,
-    imagen: "asset/crema.png"
-},
-{
-    nombre:'Bizcochuelo',
-    ingredientes: bizcochuelo,
-    procedimiento: procedimiento_bizcochuelo,
-    imagen: "asset/el-bizcochuelo.png"
-},
-{
-    nombre:'Croquetas de garbanzo',
-    ingredientes: croquetas_garb,
-    procedimiento: procedimiento_croquetas,
-    imagen: "asset/croquetas-garbanzos-veganas.jpg"
-}
-]
+//cuando se haga click en Buscar se consulta al servicio con la palabra ingresada y se mustran por pantalla
+btn_buscar.addEventListener('click', fetchRecetas)
 
 window.addEventListener("load", () => {
     if (localStorage.getItem("array_recetas")) { 
@@ -104,93 +62,74 @@ window.addEventListener("load", () => {
     }
 })
 
-
-const generar_interfaz = (array) => {
-    let contenedor = document.getElementById("container_recetas");
-    contenedor.innerHTML = "";
-    if(array.length > 0){
-        array.map( el => contenedor.innerHTML += `
-        <div class="container-fluid">        
-        <div class="card" id="${el.nombre}" style="width: 18rem;">
-          <img class="card-img-top" src="${el.imagen}" alt="Card image">
-          <div class="card-body">
-            <h5 class="card-title">${el.nombre}</h5>
-            <p class="card-text">${el.ingredientes}</p>
-            <p class="card-text">${el.procedimiento}</p>                              
-          </div>
-        </div>
-        </div>`)
-    }else{
-        //Se reemplaza usando la librería SWEET ALERT
-        //contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
-        Swal.fire({
-            icon: 'warning',
-            title: 'Oops...',
-            text: 'No tenemos esa receta, pronto la agregaremos a nuestro catálogo ☺'           
-          })
-    }
-
-}
-
-const generar_interfaz_recetas_buscadas = (array) => {
-    let contenedor = document.getElementById("container_recetas");
-    contenedor.innerHTML = "";
-    if(array.length > 0){
-        array.map( el => contenedor.innerHTML += ` 
-        <div class="container-fluid">       
-        <div class="card" id="${el.nombre}" style="width: 18rem;">
-            <p class="card-text mb-4">Recetas buscadas recientemente</p>   
-            <h5 class="card-title mb-4">${el.nombre}</h5>
-            <button id="verdenuevo" type="button" class="button mb-4">Volver a ver</button>                                     
-        </div>
-        </div>
-      `)
-    }else{
-        //contenedor.innerText = "No se encontró receta. Pronto estaremos sumando mas a nuestro catálogo :)"
-        Swal.fire({
-            icon: 'warning',
-            title: 'Oops...',
-            text: 'No tenemos esa receta, pronto la agregaremos a nuestro catálogo ☺'           
-          })
-    }
-
-}
-
-// btn_buscar.addEventListener("click", (e) => {
-//     e.target.value
-//     if(receta_elegida.value){
-//         let filtro_receta = recetas.filter( el => el.nombre.toLowerCase().includes(receta_elegida.value.toLowerCase()))
-//         localStorage.setItem("array_recetas", JSON.stringify(filtro_receta))
-//         generar_interfaz(filtro_receta);
-//         console.log(filtro_receta)
-//     }else{
-//         Swal.fire({
-//             icon: 'error',
-//             title: 'Oops...',
-//             text: 'No ingresaste ninguna receta'           
-//           })
-//     }
-   
-// })
-
-btn_buscar.addEventListener('click', fetchRecetas)
-
-//si esta el boton para volver a ver la receta, la muestro nuevamente cuando recibe el click
+//boton que muestra la receta mas en detalle
 document.addEventListener('click',function(e){
-    if(e.target && e.target.id == 'verdenuevo'){
-        arr_recetas_buscadas = JSON.parse(localStorage.getItem("array_recetas")); 
-        generar_interfaz(arr_recetas_buscadas);
-     }
+    //console.log(e)
+        if(e.target.localName === 'button' && e.type === 'click' && e.target.innerHTML === 'Ver receta'){
+            renderizarRecetaSeleccionada(e.target.id);
+            let list_ingredientes = document.getElementById('lista_ingredientes')
+            list_ingredientes.innerHTML = ""
+            if(lista_ingredientes){
+                lista_ingredientes.forEach(function(e){
+                    let li = document.createElement('li');
+                    li.innerText = e;
+                    list_ingredientes.append(li);
+                 })               
+            }
+            
+            $('#myModal').modal('show')
+                      
+        }
  });
 
+ //se cierra el modal
+  document.addEventListener('click',function(e){
+         if(e.target.id === 'close_modal' || e.target.id === 'close-x'){            
+             $('#myModal').modal('hide');
+             
+             
+         }
+  });
+
+//se busca el id del boton para saber cual es la receta seleccionada para Ver, se arman los datos y se insertan en el modal
+ const renderizarRecetaSeleccionada = (id_receta) => {
+    console.log("listado_recetas!!! ",listado_recetas)            
+        if(listado_recetas){
+            let nombre_receta = document.getElementById('nombre_receta')
+            let instrucciones = document.getElementById('instrucciones')
+            resultado = listado_recetas.find(receta =>{
+                return receta.idMeal === id_receta
+            })
+            if(resultado){
+                const ingredientes = Object.keys(resultado)
+                    .filter((key) => key.includes("strIngredient"))
+                    .reduce((obj, key) => {
+                        return Object.assign(obj, {
+                        [key]: resultado[key]
+                        });
+                }, {});
+                console.log("hola resultado",resultado);
+                console.log("hola ingredientes",ingredientes);
+            
+                if(ingredientes){
+                    lista_ingredientes = []
+                    for (const ingrediente in ingredientes) {
+                        if(ingredientes[ingrediente]){
+                        //console.log(`${ingredientes[ingrediente]}`);
+                        lista_ingredientes.push(ingredientes[ingrediente])
+                        }                        
+                    }
+                    console.log("lista_ingredientes!! ",lista_ingredientes)
+                }
+            }
+            nombre_receta.innerText = resultado.strMeal !== '' ? resultado.strMeal :`No se encontraron resultados`
+            instrucciones.innerText = resultado.strInstructions !== '' ? resultado.strInstructions :`No se encontraron resultados`
+               
+            }
+    }
 
 
-//se deja código para usar luego
-// receta_elegida.addEventListener("keyup", (e) => {
-//     e.target.value
-//     let filtro = recetas.filter( el => el.nombre.toLowerCase().includes(e.target.value.toLowerCase()))
-//     generar_interfaz(filtro)
-//     console.log(filtro)
-// })
+
+
 
 

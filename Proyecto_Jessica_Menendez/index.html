@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="style.css">
-  <nav class="navbar navbar-expand-lg bg-light">
+  <nav class="navbar navbar-expand-lg bg-info">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Recetario</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,20 +18,7 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="index.html">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pages\contact.html">Contacto</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Categorías
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="pages/dulces.html">Dulces</a></li>
-              <li><a class="dropdown-item" href="pages/paraelmate.html">Para el mate</a></li>
-              <li><a class="dropdown-item" href="pages/vegetarianas.html">Vegetarianas</a></li>          
-              <li><a class="dropdown-item" href="pages/veganas.html">Veganas</a></li>
-            </ul>
-          </li>        
+                 
         </ul>        
       </div>
     </div>
@@ -39,29 +26,49 @@
 </head>
 <title>Recetario</title>
 <body > 
-      
-  <main class="container-fluid">    
-    
-    <div class="d-flex flex-column">
-      <div class="row">
-        <input class=" col-8 mt-4" type="text" id="input_search" placeholder="Ingresa nombre de receta">      
+     
+  <div class="container py-8" id="container">
+    <div class="row">  
+      <div class="">     
+        <input class="col-8 mt-4" type="text" id="input_search" placeholder="Ingresa nombre de receta">      
         <!-- <button id="btn-buscar" class="btn btn-success col-3">Buscar</button> -->
-        <button class="button mt-4" id="btn-buscar" style="vertical-align:middle"><span>Buscar </span></button>
+        <button class="btn btn-success btn-block text-white col-4 mt-4" id="btn-buscar"><span>Buscar </span></button>
+      </div> 
+    </div>
+    <div class="row" id="container_recetas">      
+    </div>
+  </div>    
+    
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Receta</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span id="close-x" aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modal-body">
+            <h1 id="nombre_receta"></h1>
+            <h2> Ingredients: </h2> 
+            <ul id="lista_ingredientes">
+
+            </ul>
+            <h2> Instructions: </h2>
+            <p id="instrucciones"></p>
+          </div>
+          <div class="modal-footer">
+            <button id="close_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- <section id="container_recetas" class="row mt-4"></section> -->
-
-    <div>
-      <div id="container_recetas" class="row"></div>
-    </div>
-
-  </main>
-
- 
-
+    
+      
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   <script src="index.js"></script>
 </body>
 </html>
