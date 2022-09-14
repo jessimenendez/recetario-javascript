@@ -55,17 +55,10 @@ const renderizarReceta = (recetas) => {
 //cuando se haga click en Buscar se consulta al servicio con la palabra ingresada y se mustran por pantalla
 btn_buscar.addEventListener('click', fetchRecetas)
 
-window.addEventListener("load", () => {
-    if (localStorage.getItem("array_recetas")) { 
-      arr_recetas_buscadas = JSON.parse(localStorage.getItem("array_recetas"));     
-      generar_interfaz_recetas_buscadas(arr_recetas_buscadas)
-    }
-})
-
 //boton que muestra la receta mas en detalle
 document.addEventListener('click',function(e){
     //console.log(e)
-        if(e.target.localName === 'button' && e.type === 'click' && e.target.innerHTML === 'Ver receta'){
+        if(e.target.localName === 'button' && e.type === 'click' && e.target.innerHTML === 'Ver receta'){            
             renderizarRecetaSeleccionada(e.target.id);
             let list_ingredientes = document.getElementById('lista_ingredientes')
             list_ingredientes.innerHTML = ""
@@ -122,14 +115,71 @@ document.addEventListener('click',function(e){
                     console.log("lista_ingredientes!! ",lista_ingredientes)
                 }
             }
-            nombre_receta.innerText = resultado.strMeal !== '' ? resultado.strMeal :`No se encontraron resultados`
+            nombre_receta.innerText = resultado.strMeal !== '' ? resultado.strMeal :`No se encontraron resultados`            
             instrucciones.innerText = resultado.strInstructions !== '' ? resultado.strInstructions :`No se encontraron resultados`
+            localStorage.setItem("array_recetas", JSON.stringify(resultado))
                
             }
     }
 
+window.addEventListener("load", () => {
+    if (localStorage.getItem("array_recetas")) { 
+        receta_buscada = JSON.parse(localStorage.getItem("array_recetas"));
+        console.log("localstorage",receta_buscada)
+        //renderizarReceta(receta_buscada)     
+        generar_interfaz_recetas_buscadas(receta_buscada)
+    }
+})
+
+const generar_interfaz_recetas_buscadas = (array) => {
+    let contenedor = document.getElementById("container_recetas");
+    contenedor.innerHTML = "";
+    console.log("array de local storage", array)
+    if(array){
+        console.log("encontré algo en el local storage")
+            contenedor.innerHTML += `
+            <div><h1>Visitadas recientemente</h1></div>
+            <div class="card m-3" style="width: 18rem;">            
+                <img src="${array.strMealThumb}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">${array.strMeal}</h5>
+                <button type="button" class="btn btn-primary " data-target="#myModal" id='verdenuevo'>Volver a ver</button>         
+                </div>
+            </div>
+            `
+        //}
+    }  
+
+}
+
+
+document.addEventListener('click',function(e){
+    if(e.target && e.target.id == 'verdenuevo'){
+        arr_recetas_buscadas = JSON.parse(localStorage.getItem("array_recetas")); 
+        generar_interfaz_visitadas_recient(arr_recetas_buscadas);
+        
+        }
+    });
 
 
 
-
-
+    const generar_interfaz_visitadas_recient = (array) => {
+        let contenedor = document.getElementById("container_recetas");
+        contenedor.innerHTML = "";
+        console.log("array de local storage", array)
+        if(array){
+            console.log("encontré algo en el local storage")
+                contenedor.innerHTML += `
+                <div><h1>Visitadas recientemente</h1></div>
+                <div class="card m-3" style="width: 18rem;">            
+                    <img src="${array.strMealThumb}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                    <h5 class="card-title">${array.strMeal}</h5>
+                    <h8 class="card-title">${array.strInstructions}</h8>
+                    </div>
+                </div>
+                `
+            //}
+        }  
+    
+    }
